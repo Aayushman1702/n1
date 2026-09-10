@@ -1340,22 +1340,6 @@ footer{border-top:1px solid var(--paper-08);padding:5rem 0 2.5rem;background:var
     </button>
   </div>
 
-  <div class="cyl-features reveal">
-    <div class="cyl-feature-item">
-      <span class="cyl-feat-dot"></span>
-      <span>Lightning-Fast</span>
-    </div>
-    <div class="cyl-feature-item center">
-      <span class="cyl-feat-dot"></span>
-      <span>Multiple Styles &amp; Formats</span>
-    </div>
-    <div class="cyl-feature-item">
-      <span class="cyl-feat-dot"></span>
-      <span>High-Resolution</span>
-    </div>
-  </div>
-
-  <div class="arc-dots" id="arcDots"></div>
 
   <div class="container">
     <p class="equip-note reveal">Gimbals · Tripods · Rigs · Monitors · Follow Focus · Wireless Systems · Grip · Power &amp; More. <b>Lighting, audio and drones also available on request.</b></p>
@@ -1713,12 +1697,14 @@ gear.forEach((g,i)=>{
   arcCarousel.appendChild(card);
   cards.push(card);
 
-  const dot = document.createElement('div');
-  dot.className = 'arc-dot';
-  dot.addEventListener('click', ()=>{ userTriggeredNav(()=>{ active = i; render(); }); });
-  arcDots.appendChild(dot);
+  if (arcDots) {
+    const dot = document.createElement('div');
+    dot.className = 'arc-dot';
+    dot.addEventListener('click', ()=>{ userTriggeredNav(()=>{ active = i; render(); }); });
+    arcDots.appendChild(dot);
+  }
 });
-const dots = arcDots.querySelectorAll('.arc-dot');
+const dots = arcDots ? arcDots.querySelectorAll('.arc-dot') : [];
 
 let mouseParallaxX = 0;
 function render(){
@@ -1784,15 +1770,16 @@ function render(){
     card.classList.toggle('is-active', diff === 0);
   });
   
-  dots.forEach((d,i)=>{
-    d.classList.toggle('active', i===active);
-    // Restart dot fill animation on change
-    if(i===active){
-      d.style.animation = 'none';
-      d.offsetHeight; /* trigger reflow */
-      d.style.animation = '';
-    }
-  });
+  if (dots.length) {
+    dots.forEach((d,i)=>{
+      d.classList.toggle('active', i===active);
+      if(i===active){
+        d.style.animation = 'none';
+        d.offsetHeight;
+        d.style.animation = '';
+      }
+    });
+  }
   arcCarousel.style.height = (cardH + 35) + 'px';
 }
 render();
