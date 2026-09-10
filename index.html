@@ -1013,41 +1013,47 @@ nav.scrolled{background:rgba(0,0,0,.86);backdrop-filter:blur(14px);padding:1rem 
 .step p{color:var(--paper-60);font-size:.85rem;line-height:1.6;max-width:220px;}
 
 /* Mobile Curved Orbit Process (Matching Reference) */
+/* Mobile Curved Orbit Process (Matching Reference) */
 .process-mobile-stage{
   display:none;
   position:relative;
   width:100%;
-  max-width:440px;
+  max-width:100%;
   height:410px;
-  margin:1.8rem auto 0;
-  overflow:hidden;
+  margin:1.4rem auto 0;
+  overflow:visible;
   user-select:none;
   touch-action:pan-y;
 }
 .mob-arc-svg{
   position:absolute;
-  inset:0;
+  top:0;
+  left:0;
   width:100%;
   height:100%;
   pointer-events:none;
   z-index:1;
+  overflow:visible;
 }
 .mob-process-nodes{
   position:absolute;
   inset:0;
   z-index:3;
+  pointer-events:none;
 }
 .mob-node-item{
   position:absolute;
   display:flex;
   align-items:center;
-  transform-origin:left center;
+  transform:translate(0, -50%);
+  transform-origin:0 50%;
   transition:top 0.55s cubic-bezier(0.22, 0.85, 0.32, 1),
               left 0.55s cubic-bezier(0.22, 0.85, 0.32, 1),
               transform 0.55s cubic-bezier(0.22, 0.85, 0.32, 1),
               opacity 0.45s ease;
   cursor:pointer;
   white-space:nowrap;
+  pointer-events:auto;
 }
 .mob-node-dot{
   position:relative;
@@ -1055,6 +1061,7 @@ nav.scrolled{background:rgba(0,0,0,.86);backdrop-filter:blur(14px);padding:1rem 
   width:8px;
   height:8px;
   border-radius:50%;
+  margin-left:-4px; /* Centers 8px dot on the exact curve point */
   background:var(--green);
   opacity:0.65;
   box-shadow:0 0 8px var(--green);
@@ -1063,6 +1070,7 @@ nav.scrolled{background:rgba(0,0,0,.86);backdrop-filter:blur(14px);padding:1rem 
 .mob-node-item.is-active .mob-node-dot{
   width:12px;
   height:12px;
+  margin-left:-6px; /* Centers 12px active dot on the exact curve point */
   background:#ffffff;
   border:2.5px solid var(--green);
   opacity:1;
@@ -1084,23 +1092,24 @@ nav.scrolled{background:rgba(0,0,0,.86);backdrop-filter:blur(14px);padding:1rem 
 .mob-node-num{
   font-family:var(--font-display);
   font-weight:800;
-  font-size:clamp(2.4rem, 11vw, 3.4rem);
+  font-size:clamp(1.9rem, 7.5vw, 2.5rem);
   letter-spacing:-0.04em;
   line-height:1;
-  margin-left:1.2rem;
+  margin-left:0.75rem;
   transition:all 0.55s cubic-bezier(0.22, 0.85, 0.32, 1);
   color:#1b3d24;
 }
 .mob-node-item.is-active .mob-node-num{
   color:#ffffff;
-  font-size:clamp(3.1rem, 14vw, 4.4rem);
+  font-size:clamp(2.4rem, 9.5vw, 3.1rem);
   text-shadow:0 0 24px rgba(84,182,105,0.25);
 }
 .mob-node-content{
-  margin-left:1.2rem;
-  max-width:200px;
+  margin-left:0.8rem;
+  width:calc(100vw - 165px);
+  max-width:230px;
   opacity:0;
-  transform:translateX(16px);
+  transform:translateX(14px);
   pointer-events:none;
   transition:opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -1112,17 +1121,18 @@ nav.scrolled{background:rgba(0,0,0,.86);backdrop-filter:blur(14px);padding:1rem 
 .mob-node-title{
   font-family:var(--font-display);
   font-weight:700;
-  font-size:clamp(1.05rem, 4.2vw, 1.25rem);
+  font-size:clamp(0.92rem, 3.6vw, 1.12rem);
   color:var(--green);
   line-height:1.2;
-  margin-bottom:0.35rem;
+  margin-bottom:0.3rem;
   letter-spacing:-0.01em;
+  white-space:normal;
 }
 .mob-node-desc{
   font-family:var(--font-body);
-  font-size:clamp(0.78rem, 3.2vw, 0.86rem);
+  font-size:clamp(0.72rem, 2.7vw, 0.82rem);
   color:var(--paper-60);
-  line-height:1.48;
+  line-height:1.45;
   white-space:normal;
 }
 
@@ -1502,17 +1512,17 @@ footer{border-top:1px solid var(--paper-08);padding:5rem 0 2.5rem;background:var
 
     <!-- Mobile Curved Orbit Stage (Matching Reference) -->
     <div class="process-mobile-stage" id="processMobileStage">
-      <svg class="mob-arc-svg" viewBox="0 0 360 410" preserveAspectRatio="none">
+      <svg class="mob-arc-svg" id="mobArcSvg" viewBox="0 0 360 410">
         <defs>
           <linearGradient id="mobArcGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#54B669" stop-opacity="0.25"/>
+            <stop offset="0%" stop-color="#54B669" stop-opacity="0.15"/>
             <stop offset="25%" stop-color="#54B669" stop-opacity="0.85"/>
             <stop offset="50%" stop-color="#54B669" stop-opacity="1"/>
-            <stop offset="78%" stop-color="#54B669" stop-opacity="0.8"/>
-            <stop offset="100%" stop-color="#54B669" stop-opacity="0.2"/>
+            <stop offset="75%" stop-color="#54B669" stop-opacity="0.85"/>
+            <stop offset="100%" stop-color="#54B669" stop-opacity="0.15"/>
           </linearGradient>
         </defs>
-        <path d="M 26 0 C 65 70, 78 120, 78 170 C 78 220, 68 280, 48 330 C 35 365, 12 390, -20 420" stroke="url(#mobArcGrad)" stroke-width="1.6" fill="none" />
+        <path id="mobArcPath" d="M 8 10 C 38 75, 52 135, 52 205 C 52 275, 38 335, 8 400" stroke="url(#mobArcGrad)" stroke-width="1.8" fill="none" />
       </svg>
       <div class="mob-process-nodes" id="mobProcessNodes"></div>
     </div>
@@ -2319,36 +2329,70 @@ if (mobProcessNodes && mobProcessStage) {
     nodeEls.push(node);
   });
 
+  const mobArcSvg = document.getElementById('mobArcSvg');
+  const mobArcPath = document.getElementById('mobArcPath');
+
   function updateMobileOrbit() {
-    const yCenter = 195;
+    if (!mobProcessStage || !mobArcPath) return;
+
+    const stageW = mobProcessStage.clientWidth || 360;
+    const stageH = 410;
+
+    // Apex of the curve on the left
+    const apexX = Math.min(48, Math.max(32, stageW * 0.11));
+    const startEndX = 8;
+    const pathD = `M ${startEndX} 10 C ${apexX * 0.72} 75, ${apexX} 135, ${apexX} 205 C ${apexX} 275, ${apexX * 0.72} 335, ${startEndX} 400`;
+    mobArcPath.setAttribute('d', pathD);
+    if (mobArcSvg) {
+      mobArcSvg.setAttribute('viewBox', `0 0 ${stageW} ${stageH}`);
+    }
+
+    const totalLen = mobArcPath.getTotalLength();
+    if (!totalLen) return;
+
     nodeEls.forEach((node, idx) => {
-      const diff = idx - activeStepIdx;
-      const y = yCenter + (diff * 125);
-      const normY = (y - 170) / 160;
-      const x = Math.round(78 - (normY * normY * 46));
-      const angle = Math.round(-normY * 18);
+      let diff = idx - activeStepIdx;
+      if (diff > processStepsData.length / 2) diff -= processStepsData.length;
+      if (diff < -processStepsData.length / 2) diff += processStepsData.length;
+
+      let ratio;
+      if (diff === 0) {
+        ratio = 0.50; // Active step sits directly on apex
+      } else if (diff === -1) {
+        ratio = 0.18; // Step above
+      } else if (diff === 1) {
+        ratio = 0.82; // Step below
+      } else {
+        ratio = diff < 0 ? 0.02 : 0.98; // Off-screen steps
+      }
+
+      const length = ratio * totalLen;
+      const pt = mobArcPath.getPointAtLength(length);
+      const ptAhead = mobArcPath.getPointAtLength(Math.min(totalLen, length + 2));
+      const ptBehind = mobArcPath.getPointAtLength(Math.max(0, length - 2));
+      const angle = Math.atan2(ptAhead.y - ptBehind.y, ptAhead.x - ptBehind.x) * (180 / Math.PI) - 90;
 
       if (diff === 0) {
         node.classList.add('is-active');
-        node.style.top = `${y}px`;
-        node.style.left = `${x}px`;
+        node.style.top = `${pt.y.toFixed(1)}px`;
+        node.style.left = `${pt.x.toFixed(1)}px`;
         node.style.transform = `translate(0, -50%) rotate(0deg)`;
         node.style.opacity = '1';
         node.style.pointerEvents = 'auto';
         node.style.zIndex = '10';
-      } else if (diff === 1 || diff === -1) {
+      } else if (Math.abs(diff) === 1) {
         node.classList.remove('is-active');
-        node.style.top = `${y}px`;
-        node.style.left = `${x}px`;
-        node.style.transform = `translate(0, -50%) rotate(${angle}deg)`;
+        node.style.top = `${pt.y.toFixed(1)}px`;
+        node.style.left = `${pt.x.toFixed(1)}px`;
+        node.style.transform = `translate(0, -50%) rotate(${angle.toFixed(1)}deg)`;
         node.style.opacity = '0.75';
         node.style.pointerEvents = 'auto';
         node.style.zIndex = '5';
       } else {
         node.classList.remove('is-active');
-        node.style.top = `${y}px`;
-        node.style.left = `${x}px`;
-        node.style.transform = `translate(0, -50%) rotate(${angle}deg) scale(0.6)`;
+        node.style.top = `${pt.y.toFixed(1)}px`;
+        node.style.left = `${pt.x.toFixed(1)}px`;
+        node.style.transform = `translate(0, -50%) rotate(${angle.toFixed(1)}deg) scale(0.6)`;
         node.style.opacity = '0';
         node.style.pointerEvents = 'none';
         node.style.zIndex = '1';
